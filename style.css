@@ -1,0 +1,9 @@
+input {
+    display: block;
+    margin: 100px auto;
+    height: 40px;
+    width: 400px;
+    font-size: 30px;
+    border: 5px solid rgb(107, 117, 231);
+    border-radius: 10px;
+}
