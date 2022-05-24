@@ -1,9 +1,57 @@
-input {
-    display: block;
-    margin: 100px auto;
-    height: 40px;
-    width: 400px;
-    font-size: 30px;
-    border: 5px solid rgb(107, 117, 231);
-    border-radius: 10px;
+* {
+    margin: 0;
+}
+
+div {
+    outline: 2px solid rgb(107, 117, 231);
+}
+
+.main {
+    margin: 5% auto;
+    height: 450px;
+    width: 650px;
+    display: flex;
+    flex-direction: column;
+}
+
+.main > .input_form {
+    height: 50px;
+    width: 100%;
+    display: flex;
+}
+
+.main > .data {
+    height: 400px;
+    width: 100%;
+    display: flex;
+}
+
+.data > .left_group {
+    height: 100%;
+    width: 65%;
+}
+
+.data > .right_group {
+    height: 100%;
+    width: 45%;
+}
+
+.left_group > .weather_information {
+    height: 350px;
+    width: 100%;
+}
+
+.left_group > .menu {
+    height: 50px;
+    width: 100%;
+}
+
+.right_group > .form_add_location {
+    height: 60px;
+    width: 100%;
+}
+
+.right_group > .location {
+    height: 340px;
+    width: 100%;
 }

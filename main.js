@@ -8,7 +8,9 @@ formValue.addEventListener("keydown", function(key) {
     firstName = formValue.value;
     url = `${serverUrl}?name=${firstName}`;
     fetch(url)
-      .then(response => response.json())
+      .then((res) => {
+        return res.json()}
+        )
       .then((commits) => {
       if (commits.gender !== undefined && commits.gender !== null) {
         alert(firstName + " is " + commits.gender)
@@ -19,7 +21,3 @@ formValue.addEventListener("keydown", function(key) {
       formValue.value = "";
   }
 });
-
-
-
-
