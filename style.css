@@ -15,46 +15,68 @@ div {
     flex-direction: column;
 }
 
-.main > .input_form {
+.main>.input_form {
     height: 50px;
     width: 100%;
     display: flex;
 }
 
-.main > .input_form > input {
+.main>.input_form>input {
     width: 90%;
     font-size: 25px;
     padding-left: 10px;
 }
 
-.main > .data {
+.main>.data {
     height: 400px;
     width: 100%;
     display: flex;
 }
 
-.data > .left_group {
+.data>.left_group {
     height: 100%;
     width: 65%;
 }
 
-.data > .right_group {
+.data>.right_group {
     height: 100%;
     width: 45%;
 }
 
-.left_group > .weather_information {
+.left_group>.weather_information {
     height: 350px;
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-.left_group > .menu {
+.left_group>.weather_information > .data_day {
+    height: 200px;
+    width: 100%;
+    margin-bottom: 60px;
+
+}
+
+.data_day > p {
+    /* font-family: 'Roboto'; */
+    font-size: 24px;
+    line-height: 16px;
+    margin-left: 12px;
+}
+
+.month {
+    margin: 30px 0px 0px 12px;
+    font-size: 24px;
+}
+
+.left_group>.menu {
     height: 50px;
     width: 100%;
     display: flex;
 }
 
-.left_group > .menu > .menu_item {
+.left_group>.menu>.menu_item {
     width: 33%;
     height: 100%;
     display: flex;
@@ -63,33 +85,33 @@ div {
     font-size: 20px;
 }
 
-.right_group > .form_add_location {
+.right_group>.form_add_location {
     height: 60px;
     width: 100%;
-    box-sizing: border-box;   /* мнда */
+    box-sizing: border-box;
+    /* мнда */
     padding: 25px 0px 0px 20px;
     font-size: 25px;
 }
 
-.right_group > .location {
+.right_group>.location {
     height: 340px;
     width: 100%;
-    padding: 15px 0px 20px 20px;
     box-sizing: border-box;
     overflow-y: scroll;
     overflow-x: hidden;
 }
 
-.right_group > .location::-webkit-scrollbar {
+.right_group>.location::-webkit-scrollbar {
     width: 10px;
 }
 
-.right_group > .location::-webkit-scrollbar-thumb {
+.right_group>.location::-webkit-scrollbar-thumb {
     background-color: rgb(107, 117, 231);
 }
 
 p {
-    margin-top: 15px;
+    margin: 15px 0px 20px 20px;
     font-size: 25px;
 }
 
