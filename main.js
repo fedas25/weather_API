@@ -19,11 +19,13 @@ const serverUrl = 'http://api.openweathermap.org/data/2.5/weather';
 let get_city_data = (city) => {
   let url = `${serverUrl}?q=${city}&appid=${apiKey}&units=metric`;
   fetch(url)
-    .then(responce => responce.json())
+    .then(res => res.ok ? res : Promise.reject(res.status))
+    .then(res => res.json())
     .then(data => {
       data_weather = data;
       update_data();
-    });
+    })
+    .catch(err => alert("Ошибка с запросом"));
 }
 
 let city_search = () => {
@@ -54,6 +56,31 @@ for (const item of menu_items) {
     item.classList.add("selected");
   }
 }
+
+
+
+
+let list_city = [];
+
+let show_city_list = () => {
+  list_city.forEach((item) => {
+
+  })
+}
+
+let add_city_to_list = () => {
+  list_city.push = data_weather.name;
+}
+
+let edit_list_icon = document.querySelector('img[alt="edit_list_icon"]');
+
+edit_list_icon.onclick = () => {
+  if (edit_list_icon.getAttribute("favourites") !== "true") {
+    edit_list_icon.setAttribute("favourites", "true");
+    add_city_to_list();
+  }
+}
+
 
 
 // функция, которая обновляет данные с таба по нажатию на поиск +

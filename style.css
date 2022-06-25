@@ -179,4 +179,8 @@ p {
     background-color: black;
 }
 
+img[alt="edit_list_icon"] {
+    cursor: pointer;
+}
+
 /* w%100 сделать отдельный класс */
