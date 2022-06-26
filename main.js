@@ -25,7 +25,7 @@ let get_city_data = (city) => {
       data_weather = data;
       update_data();
     })
-    .catch(err => alert("Ошибка с запросом"));
+    .catch(err => alert("Ошибка " + err));
 }
 
 let city_search = () => {
@@ -57,36 +57,55 @@ for (const item of menu_items) {
   }
 }
 
-
-
-
 let list_city = [];
+
+let add_city_to_list = (city_name) => {
+  list_city.push(city_name);
+}
+
+let remove_city_from_list = (city) => {
+  list_city = list_city.filter(city_list => city_list !== city);
+  clear_screen_added_location();
+  show_city_list();
+}
+
+
+let screen_added_location = document.querySelector(".location");
+
+let clear_screen_added_location = () => {
+  screen_added_location.innerHTML = "";
+}
 
 let show_city_list = () => {
   list_city.forEach((item) => {
-
+    let delete_icon = document.createElement('img');
+    delete_icon.src = "./img/delete_icon.svg";
+    delete_icon.onclick = (event) => {
+      let city = event.target.previousSibling.nodeValue;
+      remove_city_from_list(city);
+      }
+    let p = document.createElement('p').textContent = item;
+    let div = document.createElement('div');
+    div.prepend(p);
+    div.append(delete_icon);
+    screen_added_location.prepend(div);
   })
-}
-
-let add_city_to_list = () => {
-  list_city.push = data_weather.name;
 }
 
 let edit_list_icon = document.querySelector('img[alt="edit_list_icon"]');
 
-edit_list_icon.onclick = () => {
-  if (edit_list_icon.getAttribute("favourites") !== "true") {
-    edit_list_icon.setAttribute("favourites", "true");
-    add_city_to_list();
+edit_list_icon.onclick = (event) => {
+  let city_name = event.target.previousElementSibling.innerText;
+  if (!list_city.includes(city_name)) {
+    add_city_to_list(city_name);
+    clear_screen_added_location();
+    show_city_list();
   }
+  console.log(list_city);
 }
 
 
-
 // функция, которая обновляет данные с таба по нажатию на поиск +
-
-
-
 //  ТУТ НУЖНО ДОРАБАТЫВАТЬ ОПИСАНИЕ, ТАК КАК ОНО НЕ ОЧ УНИВЕРСАЛЬНО
 // переписать clear_display через удаление всех дочерних элементов DIV c классом weather_information
 // добавить функцию clear_display обнуление всех пунктов меню
@@ -94,7 +113,8 @@ edit_list_icon.onclick = () => {
 // (это поможет оптимизировать переход между табами + сделает код более читаемым + фунуция в item.onclick будет совсем короткой)
 // добавить переменную, которая будет содержать в себе текущий таб
 
-clear_display();
 
+clear_display();
 document.querySelector(".now").classList.remove("dis_none");
 document.querySelector('[name="now"]').classList.add("selected");
+get_city_data("Moscow");

@@ -127,9 +127,18 @@ div {
     background-color: rgb(107, 117, 231);
 }
 
-p {
-    margin: 15px 0px 20px;
+.location > div {
+    width: 90%;
+    margin: 10px 0px 15px;
     font-size: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.location > div > img {
+    height: 18px;
+    width: 18px;
 }
 
 .icon-weather {
