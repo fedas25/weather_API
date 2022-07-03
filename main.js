@@ -28,15 +28,15 @@ let get_city_data = (city) => {
     .catch(err => alert("Ошибка " + err));
 }
 
+document.addEventListener("keydown", (key) => {
+  if (key.code == "Enter") city_search()
+});
+
 let city_search = () => {
   let input_form = document.querySelector(".input_form > input");
   get_city_data(input_form.value);
   input_form.value = "";
 }
-
-document.addEventListener("keydown", (key) => {
-  if (key.code == "Enter") city_search()
-});
 
 let search_icon = document.querySelector(".input_form > img");
 search_icon.onclick = city_search;
@@ -69,7 +69,6 @@ let remove_city_from_list = (city) => {
   show_city_list();
 }
 
-
 let screen_added_location = document.querySelector(".location");
 
 let clear_screen_added_location = () => {
@@ -83,8 +82,15 @@ let show_city_list = () => {
     delete_icon.onclick = (event) => {
       let city = event.target.previousSibling.nodeValue;
       remove_city_from_list(city);
-      }
-    let p = document.createElement('p').textContent = item;
+    }
+
+    let p = document.createElement('p');
+    p.textContent = item;
+    p.onclick = (event) => {
+      let city = event.target.innerText;
+      get_city_data(city);
+    }
+
     let div = document.createElement('div');
     div.prepend(p);
     div.append(delete_icon);
@@ -101,7 +107,6 @@ edit_list_icon.onclick = (event) => {
     clear_screen_added_location();
     show_city_list();
   }
-  console.log(list_city);
 }
 
 
