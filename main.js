@@ -11,6 +11,7 @@ let update_data = () => {
   let city = document.querySelector(".month");
   temp.innerHTML = Math.round(data_weather.main.temp) + "&deg;";
   city.innerHTML = data_weather.name;
+  update_selected_city(data_weather.name);
 }
 
 const apiKey = 'f660a2fb1e4bad108d6160b7f58c555f';
@@ -59,13 +60,17 @@ for (const item of menu_items) {
 
 let list_city = [];
 
+let update_selected_city = (city) => {
+  localStorage.setItem("selected_city", city)
+}
+
 let add_city_to_list = (city_name) => {
   list_city.push(city_name);
 }
 
 let remove_city_from_list = (city) => {
   list_city = list_city.filter(city_list => city_list !== city);
-  clear_screen_added_location();
+  // clear_screen_added_location();
   show_city_list();
 }
 
@@ -76,11 +81,13 @@ let clear_screen_added_location = () => {
 }
 
 let show_city_list = () => {
+  localStorage.setItem("list_city", JSON.stringify(list_city) );
+  clear_screen_added_location();
   list_city.forEach((item) => {
     let delete_icon = document.createElement('img');
     delete_icon.src = "./img/delete_icon.svg";
     delete_icon.onclick = (event) => {
-      let city = event.target.previousSibling.nodeValue;
+      let city = event.target.previousSibling.innerText;
       remove_city_from_list(city);
     }
 
@@ -104,7 +111,7 @@ edit_list_icon.onclick = (event) => {
   let city_name = event.target.previousElementSibling.innerText;
   if (!list_city.includes(city_name)) {
     add_city_to_list(city_name);
-    clear_screen_added_location();
+    // clear_screen_added_location();
     show_city_list();
   }
 }
@@ -122,4 +129,10 @@ edit_list_icon.onclick = (event) => {
 clear_display();
 document.querySelector(".now").classList.remove("dis_none");
 document.querySelector('[name="now"]').classList.add("selected");
-get_city_data("Moscow");
+
+if ( localStorage.getItem("selected_city") )  get_city_data( localStorage.getItem("selected_city") );
+
+if ( localStorage.getItem("list_city") ) {
+  list_city = JSON.parse(localStorage.getItem("list_city"));
+  show_city_list();
+}

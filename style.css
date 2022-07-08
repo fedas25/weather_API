@@ -2,13 +2,20 @@
     margin: 0;
 }
 
+.logo {
+    display: block;
+    width: 200px;
+    height: 70px;
+    margin: 20px auto 0;
+}
+
 div {
-    outline: 2px solid rgb(107, 117, 231);
+    outline: 2px solid #2871B7;
     /* box-sizing: border-box; */
 }
 
 .main {
-    margin: 5% auto;
+    margin: 1% auto;
     height: 450px;
     width: 650px;
     display: flex;
@@ -26,10 +33,15 @@ div {
     display: flex;
 }
 
-.main>.input_form>input {
+.main > .input_form > input {
     width: 90%;
     font-size: 25px;
     padding-left: 10px;
+    border: none;
+}
+
+.input_form > input:focus{
+    outline: none;
 }
 
 .main>.data {
@@ -144,6 +156,7 @@ div {
     height: 18px;
     width: 18px;
     cursor: pointer;
+    margin-right: 5px;
 }
 
 .icon-weather {
