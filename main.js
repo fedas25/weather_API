@@ -1,17 +1,41 @@
+import { storage } from "./storage.js"
+
 let data_weather;
 
 let clear_display = () => { // добавить очистку document.querySelectorAll(".weather_information > div")
   document.querySelector(".now").classList.add("dis_none");
   document.querySelector(".details").classList.add("dis_none");
-  // document.querySelector(".forecast").classList.add("dis_none");
+  document.querySelector(".forecast").classList.add("dis_none");
 }
 
-let update_data = () => {
+let update_data_now = () => {
   let temp = document.querySelector(".temperature");
   let city = document.querySelector(".month");
   temp.innerHTML = Math.round(data_weather.main.temp) + "&deg;";
   city.innerHTML = data_weather.name;
-  update_selected_city(data_weather.name);
+  storage.update_selected_city(data_weather.name);
+}
+
+let update_data_details = () => {
+  let city = document.querySelector(".details > .month");
+  city.innerText = data_weather.name;
+  
+  let temperature = document.querySelector('[name="Temperature"]')
+  temperature.innerHTML = `${temperature.getAttribute("name")}: ${Math.round(data_weather.main.temp)}&deg`;
+
+  let feels_like = document.querySelector('[name="Feels_like"]')
+  feels_like.innerHTML = `${feels_like.getAttribute("name")}: ${Math.round(data_weather.main.feels_like)}&deg`;
+
+  let weather = document.querySelector('[name="Weather"]')
+  weather.innerText = `${weather.getAttribute("name")}: ${data_weather.weather[0].description}`; 
+
+  let date_sunrise = new Date( Number(data_weather.sys.sunrise + "000") );
+  let sunrise = document.querySelector('[name="Sunrise"]');
+  sunrise.innerText = `${sunrise.getAttribute("name")}: ${(date_sunrise.getHours().toString().length == 1) ? ("0" + date_sunrise.getHours()) : date_sunrise.getHours()}:${(date_sunrise.getMinutes().toString().length == 1) ? ("0" + date_sunrise.getMinutes()) : date_sunrise.getMinutes()}`;
+
+  let date_sunset = new Date( Number(data_weather.sys.sunset + "000") );
+  let sunset = document.querySelector('[name="Sunset"]');
+  sunset.innerText = `${sunset.getAttribute("name")}: ${(date_sunset.getHours().length == 1) ? "0" + date_sunset.getHours() : date_sunset.getHours()}:${(date_sunset.getMinutes().toString().length == 1) ? "0" + date_sunset.getMinutes() : date_sunset.getMinutes()}`;
 }
 
 const apiKey = 'f660a2fb1e4bad108d6160b7f58c555f';
@@ -24,7 +48,8 @@ let get_city_data = (city) => {
     .then(res => res.json())
     .then(data => {
       data_weather = data;
-      update_data();
+      update_data_now();
+      update_data_details();
     })
     .catch(err => alert("Ошибка " + err));
 }
@@ -44,11 +69,15 @@ search_icon.onclick = city_search;
 
 let menu_items = document.querySelectorAll(".menu_item");
 
+
+// обернуть в функцию
 for (const item of menu_items) {
   item.onclick = function (event) {
+    // debugger
     clear_display();
     let teg_atr_name = event.target.getAttribute("name"); // уйдёт if снизу + кое что добавится
-    if (teg_atr_name !== "forecast") document.querySelector(`.${teg_atr_name}`).classList.remove("dis_none");
+    // if (teg_atr_name !== "forecast") 
+    document.querySelector(`.${teg_atr_name}`).classList.remove("dis_none");
 
     for (const menu_item of menu_items) {
       menu_item.classList.remove("selected");
@@ -60,17 +89,12 @@ for (const item of menu_items) {
 
 let list_city = [];
 
-let update_selected_city = (city) => {
-  localStorage.setItem("selected_city", city)
-}
-
 let add_city_to_list = (city_name) => {
   list_city.push(city_name);
 }
 
 let remove_city_from_list = (city) => {
   list_city = list_city.filter(city_list => city_list !== city);
-  // clear_screen_added_location();
   show_city_list();
 }
 
@@ -81,7 +105,8 @@ let clear_screen_added_location = () => {
 }
 
 let show_city_list = () => {
-  localStorage.setItem("list_city", JSON.stringify(list_city) );
+  storage.update_list_city(list_city);
+
   clear_screen_added_location();
   list_city.forEach((item) => {
     let delete_icon = document.createElement('img');
@@ -111,7 +136,6 @@ edit_list_icon.onclick = (event) => {
   let city_name = event.target.previousElementSibling.innerText;
   if (!list_city.includes(city_name)) {
     add_city_to_list(city_name);
-    // clear_screen_added_location();
     show_city_list();
   }
 }
@@ -127,12 +151,13 @@ edit_list_icon.onclick = (event) => {
 
 
 clear_display();
-document.querySelector(".now").classList.remove("dis_none");
-document.querySelector('[name="now"]').classList.add("selected");
 
-if ( localStorage.getItem("selected_city") )  get_city_data( localStorage.getItem("selected_city") );
+document.querySelector(".forecast").classList.remove("dis_none");
+document.querySelector('[name="forecast"]').classList.add("selected");
 
-if ( localStorage.getItem("list_city") ) {
-  list_city = JSON.parse(localStorage.getItem("list_city"));
+if ( storage.get_selected_city() )  get_city_data( storage.get_selected_city() );
+
+if ( storage.get_list_city() !== false ) {
+  list_city = storage.get_list_city();
   show_city_list();
 }

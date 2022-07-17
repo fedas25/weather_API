@@ -35,7 +35,7 @@
 
                     <!-- Details  -->
                     <div class="details">
-                        <p class="month">Aktobe</p>
+                        <p class="month"></p>
                         <div class="data_day">
                             <p name="Temperature">Temperature: </p>
                             <p name="Feels_like">Feels_like: </p>
@@ -44,9 +44,47 @@
                             <p name="Sunset">Sunset: </p>
                         </div>
                     </div>
+
+                    <!-- Forecast -->
+                    <div class="forecast">
+                        <p class="month">Novosibirsk</p>
+                        
+                        <div class="hourly_forecasts">
+
+                            <div class="forecast_for_hour">
+                                <div class="left_group">
+                                    <p class="data">17 mart</p>
+                                    <p class="temperature">Temperatur e: 13</p>
+                                    <p class="feels_like">Feel s like: 10</p>
+                                </div>
+                                <div class="right_group">
+                                    <p class="time">12:00</p>
+                                    <p class="rainfall">rain</p>
+                                    <img src="./img/forecast_rain_icon.svg" alt="">
+                                </div>
+                            </div>
+                            <div class="forecast_for_hour">
+                                <div class="left_group">
+                                    <p class="data">17 mart</p>
+                                    <p class="temperature">Temperatur e: 13</p>
+                                    <p class="feels_like">Feel s like: 10</p>
+                                </div>
+                                <div class="right_group">
+                                    <p class="time">13:00</p>
+                                    <p class="rainfall">rain</p>
+                                    <img src="./img/forecast_rain_icon.svg" alt="">
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
                 </div>
 
-                <!-- Forecast -->
+
+                
+                
 
                 <div class="menu">
                     <div name="now" class="menu_item">Now</div>
@@ -59,13 +97,16 @@
                 <div class="form_add_location">
                     Added location:
                 </div>
-                <div class="location"> </div>
+                <div class="location">
+                    <div><p>Noiцвiвrцвsk</p><img src="./img/delete_icon.svg"></div>
+                </div>
             </div>
         </div>
 
     </div>
 
-    <script src="./main.js"></script>
+    <script type="module" src="./main.js"></script>
+    <!-- <script src="./storage.js"></script> -->
 </body>
 
 </html>
