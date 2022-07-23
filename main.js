@@ -1,41 +1,39 @@
 import { storage } from "./storage.js"
 
-let data_weather;
-
-//  убрать переменную data_weather, передавать её как аргумент
-
-let clear_display = () => { // добавить очистку document.querySelectorAll(".weather_information > div")
+let clear_display = () => {
   document.querySelector(".now").classList.add("dis_none");
   document.querySelector(".details").classList.add("dis_none");
   document.querySelector(".forecast").classList.add("dis_none");
 }
 
-let update_data_now = () => {
+let update_data_now = (data) => {
   let temp = document.querySelector(".temperature");
   let city = document.querySelector(".month");
-  temp.innerHTML = Math.round(data_weather.main.temp) + "&deg;";
-  city.innerHTML = data_weather.name;
-  storage.update_selected_city(data_weather.name);
+  let icon_weather = document.querySelector(".icon-weather");
+  icon_weather.src = `http://openweathermap.org/img/wn/${data.weather[0].icon}@4x.png`
+  temp.innerHTML = Math.round(data.main.temp) + "&deg;";
+  city.innerHTML = data.name;
+  storage.update_selected_city(data.name);
 }
 
-let update_data_details = () => {
+let update_data_details = (data) => {
   let city = document.querySelector(".details > .month");
-  city.innerText = data_weather.name;
+  city.innerText = data.name;
   
   let temperature = document.querySelector('[name="Temperature"]')
-  temperature.innerHTML = `${temperature.getAttribute("name")}: ${Math.round(data_weather.main.temp)}&deg`;
+  temperature.innerHTML = `${temperature.getAttribute("name")}: ${Math.round(data.main.temp)}&deg`;
 
   let feels_like = document.querySelector('[name="Feels_like"]')
-  feels_like.innerHTML = `${feels_like.getAttribute("name")}: ${Math.round(data_weather.main.feels_like)}&deg`;
+  feels_like.innerHTML = `${feels_like.getAttribute("name")}: ${Math.round(data.main.feels_like)}&deg`;
 
   let weather = document.querySelector('[name="Weather"]')
-  weather.innerText = `${weather.getAttribute("name")}: ${data_weather.weather[0].description}`; 
+  weather.innerText = `${weather.getAttribute("name")}: ${data.weather[0].description}`; 
 
-  let date_sunrise = new Date( Number(data_weather.sys.sunrise + "000") );
+  let date_sunrise = new Date( Number(data.sys.sunrise + "000") );
   let sunrise = document.querySelector('[name="Sunrise"]');
   sunrise.innerText = `${sunrise.getAttribute("name")}: ${(date_sunrise.getHours().toString().length == 1) ? ("0" + date_sunrise.getHours()) : date_sunrise.getHours()}:${(date_sunrise.getMinutes().toString().length == 1) ? ("0" + date_sunrise.getMinutes()) : date_sunrise.getMinutes()}`;
 
-  let date_sunset = new Date( Number(data_weather.sys.sunset + "000") );
+  let date_sunset = new Date( Number(data.sys.sunset + "000") );
   let sunset = document.querySelector('[name="Sunset"]');
   sunset.innerText = `${sunset.getAttribute("name")}: ${(date_sunset.getHours().length == 1) ? "0" + date_sunset.getHours() : date_sunset.getHours()}:${(date_sunset.getMinutes().toString().length == 1) ? "0" + date_sunset.getMinutes() : date_sunset.getMinutes()}`;
 }
@@ -49,9 +47,8 @@ let get_city_data = (city) => {
     .then(res => res.ok ? res : Promise.reject(res.status))
     .then(res => res.json())
     .then(data => {
-      data_weather = data;
-      update_data_now();
-      update_data_details();
+      update_data_now(data);
+      update_data_details(data);
       get_city_data_forecast(city);
     })
     .catch(err => alert("Ошибка " + err));
@@ -67,7 +64,7 @@ let get_city_data_forecast = (city) => {
     })
     .catch(err => alert("Ошибка " + err));
 }
-
+// пониже тож в фун тип предрабочая подготовка
 document.addEventListener("keydown", (key) => {
   if (key.code == "Enter") city_search()
 });
@@ -87,10 +84,8 @@ let menu_items = document.querySelectorAll(".menu_item");
 // обернуть в функцию
 for (const item of menu_items) {
   item.onclick = function (event) {
-    // debugger
     clear_display();
     let teg_atr_name = event.target.getAttribute("name"); // уйдёт if снизу + кое что добавится
-    // if (teg_atr_name !== "forecast") 
     document.querySelector(`.${teg_atr_name}`).classList.remove("dis_none");
 
     for (const menu_item of menu_items) {
@@ -112,7 +107,6 @@ let remove_city_from_list = (city) => {
   show_city_list();
 }
 
-let screen_added_location = document.querySelector(".location");
 
 
 
@@ -126,6 +120,9 @@ let clear_screen_forecast = () => {
 
 let update_data_forecast = (data) => {
   clear_screen_forecast();
+
+  let p_name_month = document.querySelector(".forecast > .month");
+  p_name_month.innerText = data.city.name;
 
   data.list.forEach( (item_list) => {
 
@@ -142,7 +139,7 @@ let update_data_forecast = (data) => {
   p_temperature.classList.add("temperature");
   p_feels_like.classList.add("feels_like");
 
-  let date = new Date(item_list.dt * 1000);
+  let date = new Date(item_list.dt_txt);
   p_data.innerText = `${ date.getDate() } ${ date.toLocaleString( "en-US", { month: "short" } ) }`;
   p_temperature.innerHTML = `Temperature: ${Math.round(item_list.main.temp)}&deg`;
   p_feels_like.innerHTML = `Feels like: ${Math.round(item_list.main.feels_like)}&deg`;
@@ -158,9 +155,9 @@ let update_data_forecast = (data) => {
   let rainfall = document.createElement("p");
   let icon_weather = document.createElement("img");
   time.classList.add("time");
-  time.innerText = `${ date.toLocaleString( "en-US", { hour: "2-digit", minute: "2-digit" } ).substring(0,5) }`
+  time.innerText = `${ date.toLocaleString( "en-US", { hour: "2-digit", minute: "2-digit", hour12: false } ).substring(0,5) }`
   rainfall.classList.add("rainfall");
-  icon_weather.src = "./img/forecast_rain_icon.svg";
+  icon_weather.src = `http://openweathermap.org/img/wn/${item_list.weather[0].icon}@4x.png`;
 
   container_forecast_right_group.append(time);
   container_forecast_right_group.append(rainfall);
@@ -172,41 +169,10 @@ let update_data_forecast = (data) => {
   let tab_forecast = document.querySelector(".hourly_forecasts");
   tab_forecast.append(container_forecast_for_hour);
   } );
-// p_data.classList.add("data");
-//   p_temperature.classList.add("temperature");
-//   p_feels_like.classList.add("feels_like");
-
-//   list_city.forEach((item) => {
-//     let delete_icon = document.createElement('img');
-//     delete_icon.src = "./img/delete_icon.svg";
-//     delete_icon.onclick = (event) => {
-//       let city = event.target.previousSibling.innerText;
-//       remove_city_from_list(city);
-//     }
-
-//     let p = document.createElement('p');
-//     p.textContent = item;
-//     p.onclick = (event) => {
-//       let city = event.target.innerText;
-//       get_city_data(city);
-//     }
-
-//     let div = document.createElement('div');
-//     div.prepend(p);
-//     div.append(delete_icon);
-//     screen_added_location.prepend(div);
-//   })
-
-
 }
 
-
-
-// pizda naxyi !
-///////////////
-
-
-
+// запихуить в функции ниже
+let screen_added_location = document.querySelector(".location");
 
 
 let clear_screen_added_location = () => {
@@ -239,6 +205,7 @@ let clear_screen_added_location = () => {
   })
 }
 
+// дич, тоже в функцию
 let edit_list_icon = document.querySelector('img[alt="edit_list_icon"]');
 
 edit_list_icon.onclick = (event) => {
@@ -258,11 +225,13 @@ edit_list_icon.onclick = (event) => {
 // (это поможет оптимизировать переход между табами + сделает код более читаемым + фунуция в item.onclick будет совсем короткой)
 // добавить переменную, которая будет содержать в себе текущий таб
 
+// передовать данные из data_weather как аргумент
 
+// в туже предрабочую подготовку
 clear_display();
 
-document.querySelector(".forecast").classList.remove("dis_none");
-document.querySelector('[name="forecast"]').classList.add("selected");
+document.querySelector(".now").classList.remove("dis_none");
+document.querySelector('[name="now"]').classList.add("selected");
 
 if ( storage.get_selected_city() )  get_city_data( storage.get_selected_city() );
 

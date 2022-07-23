@@ -24,7 +24,7 @@ div {
 }
 
 .input_form img {
-    margin-left: 5px;
+    margin-left: 20px;
     cursor: pointer;
 }
 
@@ -115,15 +115,20 @@ div {
 
 
 .right_group>.form_add_location {
+    outline: none;
     height: 60px;
     width: 100%;
     box-sizing: border-box;
-    /* мнда */
     padding: 25px 0px 0px 20px;
     font-size: 25px;
 }
 
+.right_group>.location> div {
+    padding: 2px 0px 2px 3px;
+}
+
 .right_group>.location {
+    outline: none;
     height: 340px;
     width: 100%;
     box-sizing: border-box;
@@ -161,9 +166,9 @@ div {
 }
 
 .icon-weather {
-    width: 78px;
-    height: 59px;
-    margin: 0px auto 60px;
+    width: 150px;
+    height: 150px;
+    margin: 0px auto 10px
 }
 
 .now {
@@ -217,12 +222,13 @@ img[alt="edit_list_icon"] {
 }
 
 .forecast > .month {
-    margin: 15px 0px 10px 20px;
+    margin: 10px 0px 10px 20px;
 }
 
 .hourly_forecasts {
+    /* outline: none; */
     width: 100%;
-    height: 290px;
+    height: 295px;
     overflow-y: scroll;
     overflow-x: hidden;
 }
@@ -246,6 +252,7 @@ img[alt="edit_list_icon"] {
 }
 
 .forecast_for_hour > .left_group {
+    outline: none;
     width: 65%;
     height: 100%;
     display: flex;
@@ -263,6 +270,7 @@ img[alt="edit_list_icon"] {
 }
 
 .forecast_for_hour > .right_group {
+    outline: none;
     width: 34%;
     height: 100%;
     display: flex;
@@ -280,16 +288,7 @@ img[alt="edit_list_icon"] {
 }
 
 .right_group > img {
-    height: 40px;
-    width: 40px;
+    height: 75px;
+    width: 75px;
     margin-left: auto;
 }
-
-/* .temperature {
-    margin-bottom: 10px;
-} */
-
-
-
-
-/* w%100 сделать отдельный класс */
