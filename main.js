@@ -2,6 +2,8 @@ import { storage } from "./storage.js"
 
 let data_weather;
 
+//  убрать переменную data_weather, передавать её как аргумент
+
 let clear_display = () => { // добавить очистку document.querySelectorAll(".weather_information > div")
   document.querySelector(".now").classList.add("dis_none");
   document.querySelector(".details").classList.add("dis_none");
@@ -50,6 +52,18 @@ let get_city_data = (city) => {
       data_weather = data;
       update_data_now();
       update_data_details();
+      get_city_data_forecast(city);
+    })
+    .catch(err => alert("Ошибка " + err));
+}
+
+let get_city_data_forecast = (city) => {
+  let url = `http://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
+  fetch(url)
+    .then(res => res.ok ? res : Promise.reject(res.status))
+    .then(res => res.json())
+    .then(data => {
+      update_data_forecast(data);
     })
     .catch(err => alert("Ошибка " + err));
 }
@@ -100,11 +114,106 @@ let remove_city_from_list = (city) => {
 
 let screen_added_location = document.querySelector(".location");
 
+
+
+
+
+////////////////////
+let clear_screen_forecast = () => {
+  let hourly_forecasts = document.querySelector(".hourly_forecasts");
+  hourly_forecasts.innerHTML = "";
+}
+
+let update_data_forecast = (data) => {
+  clear_screen_forecast();
+
+  data.list.forEach( (item_list) => {
+
+  let container_forecast_for_hour = document.createElement("div");
+  container_forecast_for_hour.classList.add("forecast_for_hour");
+
+  let container_forecast_left_group = document.createElement("div");
+  container_forecast_left_group.classList.add("left_group");
+  
+  let p_data = document.createElement("p");
+  let p_temperature = document.createElement("p");
+  let p_feels_like = document.createElement("p");
+  p_data.classList.add("data");
+  p_temperature.classList.add("temperature");
+  p_feels_like.classList.add("feels_like");
+
+  let date = new Date(item_list.dt * 1000);
+  p_data.innerText = `${ date.getDate() } ${ date.toLocaleString( "en-US", { month: "short" } ) }`;
+  p_temperature.innerHTML = `Temperature: ${Math.round(item_list.main.temp)}&deg`;
+  p_feels_like.innerHTML = `Feels like: ${Math.round(item_list.main.feels_like)}&deg`;
+
+  container_forecast_left_group.append(p_data);
+  container_forecast_left_group.append(p_temperature);
+  container_forecast_left_group.append(p_feels_like);
+
+  let container_forecast_right_group = document.createElement("div");
+  container_forecast_right_group.classList.add("right_group");
+
+  let time = document.createElement("p");
+  let rainfall = document.createElement("p");
+  let icon_weather = document.createElement("img");
+  time.classList.add("time");
+  time.innerText = `${ date.toLocaleString( "en-US", { hour: "2-digit", minute: "2-digit" } ).substring(0,5) }`
+  rainfall.classList.add("rainfall");
+  icon_weather.src = "./img/forecast_rain_icon.svg";
+
+  container_forecast_right_group.append(time);
+  container_forecast_right_group.append(rainfall);
+  container_forecast_right_group.append(icon_weather);
+
+  container_forecast_for_hour.prepend(container_forecast_left_group);
+  container_forecast_for_hour.append(container_forecast_right_group);
+
+  let tab_forecast = document.querySelector(".hourly_forecasts");
+  tab_forecast.append(container_forecast_for_hour);
+  } );
+// p_data.classList.add("data");
+//   p_temperature.classList.add("temperature");
+//   p_feels_like.classList.add("feels_like");
+
+//   list_city.forEach((item) => {
+//     let delete_icon = document.createElement('img');
+//     delete_icon.src = "./img/delete_icon.svg";
+//     delete_icon.onclick = (event) => {
+//       let city = event.target.previousSibling.innerText;
+//       remove_city_from_list(city);
+//     }
+
+//     let p = document.createElement('p');
+//     p.textContent = item;
+//     p.onclick = (event) => {
+//       let city = event.target.innerText;
+//       get_city_data(city);
+//     }
+
+//     let div = document.createElement('div');
+//     div.prepend(p);
+//     div.append(delete_icon);
+//     screen_added_location.prepend(div);
+//   })
+
+
+}
+
+
+
+// pizda naxyi !
+///////////////
+
+
+
+
+
 let clear_screen_added_location = () => {
   screen_added_location.innerHTML = "";
 }
 
-let show_city_list = () => {
+  let show_city_list = () => {
   storage.update_list_city(list_city);
 
   clear_screen_added_location();
