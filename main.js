@@ -123,7 +123,9 @@ let update_data_forecast = (data) => {
 
   let p_name_month = document.querySelector(".forecast > .month");
   p_name_month.innerText = data.city.name;
-
+  
+  debugger
+  
   data.list.forEach( (item_list) => {
 
   let container_forecast_for_hour = document.createElement("div");
