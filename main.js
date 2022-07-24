@@ -207,7 +207,9 @@ let pre_work_actions = () => {
   document.querySelector(".now").classList.remove("dis_none");
   document.querySelector('[name="now"]').classList.add("selected");
 
-  if ((storage.get_selected_city()) && (storage.get_selected_city() !== 'null')) get_city_data(storage.get_selected_city());
+  if ((storage.get_selected_city()) && (storage.get_selected_city() !== 'null')) {
+    get_city_data(storage.get_selected_city());
+  } else get_city_data("Moscow");
 
   if ((storage.get_list_city()) && (storage.get_list_city() !== 'null')) {
     list_city = storage.get_list_city();
