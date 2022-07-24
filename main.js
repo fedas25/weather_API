@@ -216,5 +216,5 @@ let pre_work_actions = () => {
     show_city_list();
   }
 }
-  debugger
+
 pre_work_actions();
