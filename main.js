@@ -42,7 +42,7 @@ let update_data_details = (data) => {
 }
 
 let get_city_data = (city) => {
-  let url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+  let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
   fetch(url)
     .then(res => res.ok ? res : Promise.reject(res.status))
     .then(res => res.json())
@@ -55,7 +55,7 @@ let get_city_data = (city) => {
 }
 
 let get_city_data_forecast = (city) => {
-  let url = `http://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
+  let url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
   fetch(url)
     .then(res => res.ok ? res : Promise.reject(res.status))
     .then(res => res.json())
