@@ -183,7 +183,7 @@ let clear_screen_added_location = () => {
 
   let show_city_list = () => {
   storage.update_list_city(list_city);
-
+debugger
   clear_screen_added_location();
   list_city.forEach((item) => {
     let delete_icon = document.createElement('img');
@@ -228,7 +228,7 @@ edit_list_icon.onclick = (event) => {
 // добавить переменную, которая будет содержать в себе текущий таб
 
 // передовать данные из data_weather как аргумент
-
+debugger
 // в туже предрабочую подготовку
 clear_display();
 
